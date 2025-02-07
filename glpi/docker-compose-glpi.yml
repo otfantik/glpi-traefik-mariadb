@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  glpi:
+    image: "diouxx/glpi"
+    container_name: "glpi"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rmqiBzyfx5rH
+      - MYSQL_DATABASE=glpidb
+      - MYSQL_USER=glpiliis
+      - MYSQL_PASSWORD=QJR2WEEljf3S
+    volumes:
+      - ./glpi_data:/var/www/html/glpi
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.glpi.rule=Host(`glpi.liis.local`)
+      - traefik.http.routers.glpi.tls=true
+      - traefik.http.routers.glpi.entrypoints=websecure
+      - traefik.http.routers.glpi.service=glpi
+      - traefik.http.services.glpi.loadbalancer.server.port=80
+    restart: always
+
+networks:
+  proxy:
+    external: true

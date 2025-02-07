@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  traefik:
+    networks:
+      - proxy
+    image: traefik:latest
+    container_name: "local_traefik"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./ssl_certificates/:/etc/traefik/certs/:ro
+      - ./static_conf.yml:/traefik.yml:ro
+      - ./conf/:/etc/traefik/conf/:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.rule=Host(`traefik.liis.local`)
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.services.traefik-traefik.loadbalancer.server.port=8000
+
+networks:
+  proxy:
+    external: true
