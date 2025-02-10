@@ -15,7 +15,7 @@ services:  # Start of service definitions
       - proxy  # Uses external 'proxy' network for communication
     labels:  # Traefik-specific configuration labels
       - traefik.enable=true  # Enables Traefik proxy for this container
-      - traefik.http.routers.glpi.rule=Host(`glpi.localhost.local`)  # Routes requests for this host
+      - traefik.http.routers.glpi.rule=Host(`glpi.company.local`)  # Routes requests for this host
       - traefik.http.routers.glpi.tls=true  # Enables HTTPS/TLS encryption
       - traefik.http.routers.glpi.entrypoints=websecure  # Uses Traefik's HTTPS entrypoint
       - traefik.http.routers.glpi.service=glpi  # Names the Traefik service
