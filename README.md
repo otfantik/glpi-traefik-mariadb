@@ -93,3 +93,7 @@ ________________________________________________________________________________
 		docker-compose -f traefik/docker-compose-traefik.yml up -d
 		docker-compose -f mariadb_glpi/docker-compose-mariadb.yml up -d
 		docker-compose -f glpi/docker-compose-glpi.yml up -d
+Получаем доступ по 
+
+	traefik.company.local
+ 	glpi.company.local
