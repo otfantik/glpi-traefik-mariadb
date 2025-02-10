@@ -1,24 +1,24 @@
 log:
-  level: ERROR
+  level: ERROR #Sets the logging level to ERROR, meaning only error messages will be logged.
 
 entryPoints:
   web:
-    address: ":80"
+    address: ":80" #Specifies that the web entry point listens on port 80, typically used for HTTP traffic.
     http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-  websecure:
-    address: ":443"
+      redirections: #Starts the configuration for HTTP redirections.
+        entryPoint: #Defines a redirection based on the entry point.
+          to: websecure #Redirects traffic from the web entry point to the websecure entry point.
+          scheme: https #Specifies that the redirection should use HTTPS.
+  websecure: #Defines an entry point named websecure.
+    address: ":443" #Specifies that the websecure entry point listens on port 443, typically used for HTTPS traffic.
 
 providers:
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false
+  docker: #Defines a provider for Docker.
+    endpoint: "unix:///var/run/docker.sock" #Specifies the Docker socket for Traefik to communicate with Docker.
+    exposedByDefault: false #Indicates that Docker containers are not exposed by default to Traefik unless explicitly configured.
   file:
-    directory: "/etc/traefik/conf"
-    watch: true
+    directory: "/etc/traefik/conf" #Specifies the directory where Traefik will watch for additional configuration files.
+    watch: true #Enables watching the specified directory for changes, allowing Traefik to pick up updated configurations automatically.
 
 api:
-  dashboard: true
+  dashboard: true #Enables the Traefik dashboard, allowing users to access a web interface for monitoring and managing the Traefik instance.

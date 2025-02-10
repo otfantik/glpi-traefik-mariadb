@@ -1,19 +1,19 @@
-version: "3.8"
-services:
- mariadb:
-    image: mariadb:10.7
-    container_name: mariadb_glpi
-    environment:
-      - MYSQL_ROOT_PASSWORD=rmqiBzyfx5rH
-      - MYSQL_DATABASE=glpidb
-      - MYSQL_USER=glpiliis
-      - MYSQL_PASSWORD=QJR2WEEljf3S
-    volumes:
-      - /var/lib/mysql:/var/lib/mysql
-    networks:
-      - proxy
-    restart: always
+version: "3.8" #Specifies the version of the Docker Compose file format to use.
+services: #Begins the definition of the services that will be run in containers.
+ mariadb: #Defines a service named mariadb.
+    image: mariadb:10.7 #Specifies the Docker image to use for the MariaDB service, using version 10.7.
+    container_name: mariadb_glpi #Sets the name of the container to mariadb_glpi.
+    environment: #Begins the block to define environment variables for the container.
+      - MYSQL_ROOT_PASSWORD=YOUR_ROOT_PASS #Sets the root password for the MariaDB database.
+      - MYSQL_DATABASE=YOUR_DATABASE_NAME #Creates a new database with the name specified.
+      - MYSQL_USER=YOUR_USER_NAME #Defines a new user for the database.
+      - MYSQL_PASSWORD=YOUR_USER_PASS #Sets the password for the newly created user.
+    volumes: #Begins the specification of volume mappings for persistent data.
+      - /var/lib/mysql:/var/lib/mysql #Mounts the host directory /var/lib/mysql to the container's /var/lib/mysql, keeping data persistent.
+    networks: #Begins the block to define network settings for the service.
+      - proxy #Connects the service to an external network named proxy.
+    restart: always #Configures the container to restart automatically if it stops.
 
-networks:
-  proxy:
-    external: true
+networks: #Begins the definition of networks used in the Compose file.
+  proxy: #Defines a network named proxy.
+    external: true #Indicates that the proxy network is external and managed outside this Compose file.

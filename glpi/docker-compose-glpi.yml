@@ -1,26 +1,27 @@
-version: "3.8"
-services:
-  glpi:
-    image: "diouxx/glpi"
-    container_name: "glpi"
-    environment:
-      - MYSQL_ROOT_PASSWORD=rmqiBzyfx5rH
-      - MYSQL_DATABASE=glpidb
-      - MYSQL_USER=glpiliis
-      - MYSQL_PASSWORD=QJR2WEEljf3S
-    volumes:
-      - ./glpi_data:/var/www/html/glpi
-    networks:
-      - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.glpi.rule=Host(`glpi.liis.local`)
-      - traefik.http.routers.glpi.tls=true
-      - traefik.http.routers.glpi.entrypoints=websecure
-      - traefik.http.routers.glpi.service=glpi
-      - traefik.http.services.glpi.loadbalancer.server.port=80
-    restart: always
+version: "3.8"  # Specifies the Docker Compose syntax version
 
-networks:
-  proxy:
-    external: true
+services:  # Start of service definitions
+  glpi:  # Service name (arbitrary identifier)
+    image: "diouxx/glpi"  # Uses the official GLPI Docker image from Docker Hub
+    container_name: "glpi"  # Explicitly names the container "glpi"
+    environment:  # Sets environment variables for the container
+      - MYSQL_ROOT_PASSWORD=YOUR_ROOT_PASS  # Root password for MySQL database
+      - MYSQL_DATABASE=YOUR_DATABASE_NAME  # Creates a database with this name
+      - MYSQL_USER=YOUR_USER_NAME  # Creates a MySQL user with specified name
+      - MYSQL_PASSWORD=YOU_USER_PASS  # Password for the MySQL user
+    volumes:  # Persists data between container restarts
+      - ./glpi_data:/var/www/html/glpi  # Mounts local folder to container's GLPI installation
+    networks:  # Connects container to specified networks
+      - proxy  # Uses external 'proxy' network for communication
+    labels:  # Traefik-specific configuration labels
+      - traefik.enable=true  # Enables Traefik proxy for this container
+      - traefik.http.routers.glpi.rule=Host(`glpi.localhost.local`)  # Routes requests for this host
+      - traefik.http.routers.glpi.tls=true  # Enables HTTPS/TLS encryption
+      - traefik.http.routers.glpi.entrypoints=websecure  # Uses Traefik's HTTPS entrypoint
+      - traefik.http.routers.glpi.service=glpi  # Names the Traefik service
+      - traefik.http.services.glpi.loadbalancer.server.port=80  # Exposes container port 80
+    restart: always  # Automatically restarts container if it stops
+
+networks:  # Network definitions
+  proxy:  # Network name (must match service network)
+    external: true  # Indicates network is created outside this compose file

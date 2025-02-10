@@ -1,30 +1,30 @@
-version: "3.8"
+version: "3.8" #version .
 services:
-  traefik:
+  traefik: #   Names the service 
     networks:
-      - proxy
-    image: traefik:latest
+      - proxy #netwrok for connect to GLPI .
+    image: traefik:latest  #latest official image.
     container_name: "local_traefik"
-    restart: unless-stopped
+    restart: unless-stopped #Configures the container to restart automatically unless it has been manually stopped by the user.
     security_opt:
-      - no-new-privileges:true
+      - no-new-privileges:true #Applies security options, preventing privilege escalation.
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80"   #Forwards HTTP traffic from port 80 on the host to port 80 in the container.
+      - "443:443" # Forwards HTTPS traffic from port 443 on the host to port 443 in the container.
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./ssl_certificates/:/etc/traefik/certs/:ro
-      - ./static_conf.yml:/traefik.yml:ro
-      - ./conf/:/etc/traefik/conf/:ro
+      - /etc/localtime:/etc/localtime:ro #  Synchronizes the local timezone of the host with the container, mounted as read-only.
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Grants access to the Docker daemon for the Traefik service in read-only mode, allowing it to discover available containers.
+      - ./ssl_certificates/:/etc/traefik/certs/:ro #Mounts a local directory containing SSL certificates to the container for secure traffic, in read-only mode.
+      - ./static_conf.yml:/traefik.yml:ro # Loads a static configuration file for Traefik, mounted as read-only.
+      - ./conf/:/etc/traefik/conf/:ro #Mounts additional configuration files from a local directory into the container, also in read-only mode.
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.entrypoints=websecure
-      - traefik.http.routers.traefik.rule=Host(`traefik.liis.local`)
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.service=api@internal
-      - traefik.http.services.traefik-traefik.loadbalancer.server.port=8000
+      - traefik.enable=true #Enables the Traefik service to manage routing for this service.
+      - traefik.http.routers.traefik.entrypoints=websecure #Specifies that the "traefik" router listens on the "websecure" entry point, indicating an HTTPS configuration.
+      - traefik.http.routers.traefik.rule=Host(`traefik.company.local`) #Defines a rule to handle requests sent to the specified host.
+      - traefik.http.routers.traefik.tls=true #    Indicates that TLS should be used for security in this router.
+      - traefik.http.routers.traefik.service=api@internal #  Indicates that the internal Traefik API should handle requests for this router.
+      - traefik.http.services.traefik-traefik.loadbalancer.server.port=8000 #Configures the service to route traffic to port 8000 for load balancing
 
 networks:
   proxy:
-    external: true
+    external: true #    Specifies that the network is managed outside of the Docker Compose file, meaning it was created manually or by other means.
